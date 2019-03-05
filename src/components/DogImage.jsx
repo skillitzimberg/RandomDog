@@ -1,7 +1,9 @@
 import React from 'react';
 
-function DogImage(props) {
+function DogImage() {
   return (
-    <img src={props.imageURL} />
-  )
+    <p></p>
+  );
 }
+
+export default DogImage;

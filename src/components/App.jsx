@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { newImageUrl } from './../actions';
 import APIForm from './APIForm';
 import DogImage from './DogImage';
 
@@ -9,9 +12,10 @@ class App extends React.Component {
       imageURL: ''
     };
     this.handleFormSubmission = this.handleFormSubmission.bind(this);
+    this.randomImageApiCall = this.randomImageApiCall.bind(this);
   }
 
-  handleFormSubmission(){
+  randomImageApiCall() {
     let url = 'https://dog.ceo/api/breeds/image/random';
     fetch(url)
       .then(result => result.json())
@@ -23,16 +27,32 @@ class App extends React.Component {
       );
   }
 
+  handleFormSubmission(){
+    this.randomImageApiCall();
+  }
+
+  componentDidMount() {
+    console.log("mounted");
+    this.randomImageApiCall();
+  }
+
   render(){
     return (
       <div>
         <h1> Hello !!!</h1>
         <APIForm onFormSubmission = {this.handleFormSubmission}/>
-        <DogImage imageURL={this.state.imageURL}/>
+        <DogImage />
       </div>
     );
-
   }
 }
 
-export default App;
+App.propTypes = {
+  url: PropTypes.string
+}
+
+const mapStateToProps = state => {
+  const url = state.imageURL;
+}
+
+export default connect(mapStateToProps)(App);
