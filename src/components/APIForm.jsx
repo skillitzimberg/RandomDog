@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 function APIForm(props){
   function handleSubmit(event){
@@ -18,4 +19,12 @@ APIForm.propTypes ={
   onFormSubmission: PropTypes.func
 };
 
-export default APIForm;
+const mapStateToProps = state => {
+  let compState = state;
+  // console.log("STATE:", state)
+  return {
+    storeState: "compState"
+  }
+}
+
+export default connect(mapStateToProps)(APIForm);

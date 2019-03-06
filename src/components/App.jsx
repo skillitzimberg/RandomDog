@@ -6,53 +6,64 @@ import APIForm from './APIForm';
 import DogImage from './DogImage';
 
 class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      imageURL: ''
-    };
-    this.handleFormSubmission = this.handleFormSubmission.bind(this);
-    this.randomImageApiCall = this.randomImageApiCall.bind(this);
+    this.randomImageApiCall=this.randomImageApiCall.bind(this);
+    this.handleFormSubmission=this.handleFormSubmission.bind(this);
+
+    // console.log(props.imageUrl)
   }
 
   randomImageApiCall() {
     let url = 'https://dog.ceo/api/breeds/image/random';
-    fetch(url)
+    return fetch(url)
       .then(result => result.json())
-      .then((result)=>{console.log(result);
+      .then((result)=>{
+        console.log('randomImageApiCall: ', result);
+        return result;
+        // const resultURL = result.message;
+        // return resultURL;
       },
       (error) => {
-        console.log(error);
+        return error;
       }
       );
   }
 
   handleFormSubmission(){
-    this.randomImageApiCall();
+    let result = this.randomImageApiCall();
+    console.log('RESULT: ', result);
+    // this.props.dispatch({type: "SET_IMAGE_URL", newUrl: 'www.learnhowtoprogram.com'})
   }
 
-  componentDidMount() {
-    console.log("mounted");
-    this.randomImageApiCall();
-  }
+  // componentDidMount() {
+  //   this.randomImageApiCall();
+  // }
 
-  render(){
+  render() {
+    this.props.dispatch({type: "SET_IMAGE_URL", newUrl: 'www.learnhowtoprogram.com'})
+    console.log("props:", this.props)
     return (
       <div>
         <h1> Hello !!!</h1>
+        <h2>{this.props.imageUrl}</h2>
         <APIForm onFormSubmission = {this.handleFormSubmission}/>
         <DogImage />
       </div>
     );
   }
+
 }
 
 App.propTypes = {
-  url: PropTypes.string
+  imageUrl: PropTypes.string
 }
 
 const mapStateToProps = state => {
-  const url = state.imageURL;
+  // console.log("from APP mapStateToProps: ", state)
+  return {
+    imageUrl: state.imageUrl
+  }
 }
 
 export default connect(mapStateToProps)(App);
